@@ -50,7 +50,7 @@ Before a second contribution, do something with someone else's work: review a pu
 
 ## Run it locally
 
-You do not need this to add your profile. Use it when you want to change the site itself and see the result on your own computer before you open a pull request.
+After the presentation, you can run this on your own computer in your own time. Use it to try a change to the site and see the result before you open a pull request.
 
 ```bash
 python3 scripts/profiles.py validate
@@ -58,7 +58,7 @@ python3 scripts/profiles.py build
 python3 -m http.server 8765
 ```
 
-Open http://localhost:8765/
+Then, open http://localhost:8765/
 
 ## Maintainer
 
