@@ -10,14 +10,19 @@ Adding yourself makes you a node. A collection of nodes is not much of a network
 
 You do not need to be looking for a job to take part.
 
+## The site
+
+[Network Effect](https://mistring.github.io/network-effect/) is the page for this experiment. It shows who has joined, what they want to learn, and who might be able to help.
+
+Add yourself from [Join](https://mistring.github.io/network-effect/#join).
+
 ## Join
 
 The first contribution requires no new code. It should take about two minutes.
 
-1. [Open the site and choose Join.](https://mistring.github.io/network-effect/#join)
-2. Fill in your name, GitHub username, and a few interests.
-3. Choose **Add my profile**.
-4. GitHub will ask you to commit the file. If you do not have write access, that proposal becomes a pull request.
+1. Fill in your name, GitHub username, and a few interests.
+2. Choose **Add my profile**.
+3. GitHub will ask you to commit the file. If you do not have write access, that proposal becomes a pull request.
 
 Or do it by hand:
 
