@@ -58,8 +58,6 @@ python3 -m http.server 8765
 
 Open http://localhost:8765/
 
-For the in-class refresh, the presenter uses `?live=1`. That reads profiles from the GitHub API as soon as they land on `main`, instead of waiting for GitHub Pages to rebuild. Everyone else can use the normal page.
-
 ## Maintainer
 
 Michael Stringham reviews and merges pull requests. Anyone can fork the repository and propose a change.
