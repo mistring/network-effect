@@ -4,7 +4,9 @@ Participation is optional. Be curious, be helpful, and be kind. Read the code of
 
 ## Add yourself
 
-Use the form on the site, or add `data/people/<your-username>.json`.
+Use the form on the site. It opens a GitHub issue, and a workflow saves your profile from the account that submitted the issue. You do not fork the repository for this step.
+
+To edit the file yourself, add `data/people/<your-username>.json` and open a pull request.
 
 Use only values from `data/vocab.json`. The check fails closed on emails, phone numbers, extra fields, and lists that are too long.
 

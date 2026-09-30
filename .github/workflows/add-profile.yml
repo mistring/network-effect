@@ -1,0 +1,51 @@
+name: Add profile
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: add-profile
+  cancel-in-progress: false
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - id: accept
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+        run: python scripts/profiles.py accept-issue
+      - name: Commit profile
+        if: steps.accept.outputs.added == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/people data/people.json
+          git commit -m "Add ${{ github.event.issue.user.login }} to the network [skip ci]"
+          git push
+      - name: Reply and close
+        if: steps.accept.outputs.status != 'skip'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS: ${{ steps.accept.outputs.status }}
+          DETAIL: ${{ steps.accept.outputs.detail }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          if [ "$STATUS" = "added" ]; then
+            gh issue comment "$NUMBER" --body "Added. Your profile is on the site."
+          elif [ "$STATUS" = "exists" ]; then
+            gh issue comment "$NUMBER" --body "This GitHub account is already on the network."
+          else
+            gh issue comment "$NUMBER" --body "This profile was not added. ${DETAIL}"
+          fi
+          gh issue close "$NUMBER"

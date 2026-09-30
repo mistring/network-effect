@@ -29,13 +29,40 @@ async function getJson(url) {
   return response.json();
 }
 
+function profileFromIssue(issue) {
+  if (!issue || issue.pull_request) return null;
+  const match = text(issue.body).match(/```profile\s*([\s\S]*?)```/);
+  if (!match) return null;
+  let data;
+  try {
+    data = JSON.parse(match[1]);
+  } catch (error) {
+    return null;
+  }
+  const author = text(issue.user && issue.user.login).trim().toLowerCase();
+  if (!author || !data || typeof data !== "object" || !text(data.name).trim()) return null;
+  data.github = author;
+  return data;
+}
+
 async function loadLivePeople(project) {
-  const base = `https://api.github.com/repos/${project.owner}/${project.repo}/contents/data/people?ref=${project.branch}`;
-  const listing = await getJson(base);
+  const contentsUrl = `https://api.github.com/repos/${project.owner}/${project.repo}/contents/data/people?ref=${project.branch}`;
+  const issuesUrl = `https://api.github.com/repos/${project.owner}/${project.repo}/issues?state=open&per_page=100`;
+  const [listing, issues] = await Promise.all([
+    getJson(contentsUrl),
+    getJson(issuesUrl).catch(() => [])
+  ]);
   const files = listing.filter((file) => file.type === "file" && file.name.endsWith(".json") && file.name !== "template.json");
-  const people = await Promise.all(files.map((file) => getJson(file.download_url)));
-  people.sort((a, b) => text(a.name).localeCompare(text(b.name)));
-  return people;
+  const saved = await Promise.all(files.map((file) => getJson(file.download_url)));
+  const byLogin = new Map();
+  saved.forEach((person) => byLogin.set(text(person.github).toLowerCase(), person));
+  (Array.isArray(issues) ? issues : []).forEach((issue) => {
+    const person = profileFromIssue(issue);
+    if (!person) return;
+    const key = person.github.toLowerCase();
+    if (!byLogin.has(key)) byLogin.set(key, person);
+  });
+  return [...byLogin.values()].sort((a, b) => text(a.name).localeCompare(text(b.name)));
 }
 
 async function load() {
@@ -234,16 +261,23 @@ function profileFromForm() {
   return profile;
 }
 
-function proposeUrl(profile) {
-  const { owner, repo, branch } = state.project;
-  const filename = `${profile.github}.json`;
-  const value = JSON.stringify(profile, null, 2) + "\n";
+function issueUrl(profile) {
+  const { owner, repo } = state.project;
+  const body = [
+    `Name: ${profile.name}`,
+    `GitHub: ${profile.github}`,
+    "",
+    "```profile",
+    JSON.stringify(profile, null, 2),
+    "```",
+    ""
+  ].join("\n");
   const query = [
-    `filename=${encodeURIComponent(filename)}`,
-    `value=${encodeURIComponent(value)}`,
-    `message=${encodeURIComponent(`Add ${profile.github} to the network`)}`
+    "template=add-profile.md",
+    `title=${encodeURIComponent(`Add ${profile.name}`)}`,
+    `body=${encodeURIComponent(body)}`
   ].join("&");
-  return `https://github.com/${owner}/${repo}/new/${branch}/data/people?${query}`;
+  return `https://github.com/${owner}/${repo}/issues/new?${query}`;
 }
 
 function refreshPreview() {
@@ -291,7 +325,7 @@ function buildForm() {
       $("form-error").textContent = "Pick 1 to 3 interests.";
       return;
     }
-    window.location.href = proposeUrl(profile);
+    window.location.href = issueUrl(profile);
   });
   refreshPreview();
 }

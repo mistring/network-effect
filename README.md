@@ -18,11 +18,12 @@ Add yourself from [Join](https://mistring.github.io/network-effect/#join).
 
 ## Join
 
-The first contribution requires no new code. It should take about two minutes.
+The first contribution requires no new code. It should take about two minutes. You do not fork the repository, and you do not open a pull request.
 
 1. Fill in your name, GitHub username, and a few interests.
 2. Choose **Add my profile**.
-3. GitHub will ask you to commit the file. If you do not have write access, that proposal becomes a pull request.
+3. On the GitHub screen, choose **Submit new issue**. Sign in with the same username you typed.
+4. The site adds your profile from that issue. Refresh to see it.
 
 Or do it by hand:
 
@@ -32,7 +33,7 @@ Or do it by hand:
 4. Fill it in. No email, phone number, or résumé.
 5. Open a pull request.
 
-After the pull request is merged, a workflow rebuilds `data/people.json` and the site updates.
+A workflow saves the profile from the issue and rebuilds `data/people.json`. Editing the file yourself still goes through a pull request, below.
 
 ## What the site shows
 

@@ -4,11 +4,13 @@
 Usage:
   python scripts/profiles.py validate
   python scripts/profiles.py build
+  ISSUE_BODY=... ISSUE_AUTHOR=... python scripts/profiles.py accept-issue
 """
 
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -191,11 +193,86 @@ def build() -> int:
     return 0
 
 
+PROFILE_FENCE = re.compile(r"```profile\s*(.*?)```", re.DOTALL)
+
+
+def set_output(key: str, value: str) -> None:
+    print(f"{key}={value}")
+    path = os.environ.get("GITHUB_OUTPUT")
+    if not path:
+        return
+    with open(path, "a", encoding="utf-8") as handle:
+        handle.write(f"{key}={value}\n")
+
+
+def accept_issue() -> int:
+    """Save a profile issue directly. Skip issues that are not profiles."""
+    body = os.environ.get("ISSUE_BODY", "")
+    author = os.environ.get("ISSUE_AUTHOR", "").strip().lower()
+    match = PROFILE_FENCE.search(body)
+    if not match:
+        set_output("added", "false")
+        set_output("status", "skip")
+        return 0
+
+    if not GITHUB_RE.match(author):
+        set_output("added", "false")
+        set_output("status", "invalid")
+        set_output("detail", "The GitHub account name could not be used as a profile filename.")
+        return 0
+
+    try:
+        data = json.loads(match.group(1))
+    except json.JSONDecodeError:
+        set_output("added", "false")
+        set_output("status", "invalid")
+        set_output("detail", "The profile JSON could not be read.")
+        return 0
+    if not isinstance(data, dict):
+        set_output("added", "false")
+        set_output("status", "invalid")
+        set_output("detail", "The profile JSON could not be read.")
+        return 0
+
+    data["github"] = author
+    path = PEOPLE_DIR / f"{author}.json"
+    if path.exists():
+        set_output("added", "false")
+        set_output("status", "exists")
+        set_output("detail", "This GitHub account is already on the network.")
+        return 0
+
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    errors = validate_profile(path, load_json(VOCAB_PATH))
+    if errors:
+        path.unlink()
+        set_output("added", "false")
+        set_output("status", "invalid")
+        set_output("detail", " ".join(errors))
+        return 0
+
+    if build() != 0:
+        path.unlink()
+        set_output("added", "false")
+        set_output("status", "invalid")
+        set_output("detail", "The profile did not pass the check.")
+        return 0
+
+    set_output("added", "true")
+    set_output("status", "added")
+    set_output("detail", f"Added @{author}.")
+    return 0
+
+
 def main() -> int:
-    if len(sys.argv) != 2 or sys.argv[1] not in {"validate", "build"}:
-        print("Usage: python scripts/profiles.py validate|build", file=sys.stderr)
+    if len(sys.argv) != 2 or sys.argv[1] not in {"validate", "build", "accept-issue"}:
+        print("Usage: python scripts/profiles.py validate|build|accept-issue", file=sys.stderr)
         return 2
-    return validate() if sys.argv[1] == "validate" else build()
+    if sys.argv[1] == "validate":
+        return validate()
+    if sys.argv[1] == "build":
+        return build()
+    return accept_issue()
 
 
 if __name__ == "__main__":
