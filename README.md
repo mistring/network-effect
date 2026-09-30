@@ -16,7 +16,7 @@ The first contribution requires no new code. It should take about two minutes.
 
 1. [Open the site and choose Join.](https://mistring.github.io/network-effect/#join)
 2. Fill in your name, GitHub username, and a few interests.
-3. Choose **Propose this on GitHub**.
+3. Choose **Add my profile**.
 4. GitHub will ask you to commit the file. If you do not have write access, that proposal becomes a pull request.
 
 Or do it by hand:
