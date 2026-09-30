@@ -50,6 +50,8 @@ Before a second contribution, do something with someone else's work: review a pu
 
 ## Run it locally
 
+You do not need this to add your profile. Use it when you want to change the site itself and see the result on your own computer before you open a pull request.
+
 ```bash
 python3 scripts/profiles.py validate
 python3 scripts/profiles.py build
