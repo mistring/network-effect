@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Add yourself
+    url: https://mistring.github.io/network-effect/#join
+    about: Use the form to propose your profile. You do not need to open an issue.

@@ -1,0 +1,63 @@
+{
+  "interests": [
+    "AI / ML",
+    "Mobile",
+    "Web",
+    "Cybersecurity",
+    "Cloud",
+    "Data",
+    "Games",
+    "Systems",
+    "Robotics",
+    "Design",
+    "Open source"
+  ],
+  "languages": [
+    "Python",
+    "Java",
+    "Kotlin",
+    "JavaScript",
+    "TypeScript",
+    "C",
+    "C++",
+    "C#",
+    "Rust",
+    "Go",
+    "SQL",
+    "Swift"
+  ],
+  "topics": [
+    "Python",
+    "Java",
+    "Kotlin",
+    "JavaScript",
+    "Rust",
+    "Go",
+    "SQL",
+    "Android",
+    "Web",
+    "AI / ML",
+    "Cloud",
+    "Cybersecurity",
+    "Git and GitHub",
+    "Internships",
+    "Interviews",
+    "Career advice",
+    "Open source"
+  ],
+  "industries": [
+    "Healthcare",
+    "Finance",
+    "Aerospace",
+    "Gaming",
+    "Education",
+    "Big tech",
+    "Government",
+    "Defense",
+    "Retail",
+    "Entertainment",
+    "Startups",
+    "Research",
+    "I'm not sure yet"
+  ]
+}
