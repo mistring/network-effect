@@ -23,5 +23,22 @@
       "Healthcare",
       "Retail"
     ]
+  },
+  {
+    "github": "msstringham",
+    "name": "MikStr",
+    "interests": [
+      "Mobile",
+      "Cybersecurity"
+    ],
+    "learning": [
+      "Kotlin"
+    ],
+    "askMeAbout": [
+      "Web"
+    ],
+    "industries": [
+      "Big tech"
+    ]
   }
 ]
