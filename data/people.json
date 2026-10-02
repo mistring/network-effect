@@ -23,5 +23,23 @@
       "Healthcare",
       "Retail"
     ]
+  },
+  {
+    "github": "j3ffgr0v3r",
+    "name": "Rick Astley",
+    "interests": [
+      "Mobile",
+      "Web",
+      "Games"
+    ],
+    "learning": [
+      "Go"
+    ],
+    "askMeAbout": [
+      "Python"
+    ],
+    "industries": [
+      "Entertainment"
+    ]
   }
 ]
