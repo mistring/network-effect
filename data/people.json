@@ -129,5 +129,23 @@
     "industries": [
       "Research"
     ]
+  },
+  {
+    "github": "stargazerswing955",
+    "name": "Sarah Kennedy",
+    "interests": [
+      "Mobile",
+      "Games",
+      "Design"
+    ],
+    "learning": [
+      "Cloud"
+    ],
+    "askMeAbout": [
+      "Java"
+    ],
+    "industries": [
+      "Entertainment"
+    ]
   }
 ]
